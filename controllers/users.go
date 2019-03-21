@@ -2,18 +2,46 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/ACM-VIT/c2c_evaluation_portal/models"
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
 )
 
 type LoginResponse struct {
-	Code string `json:"code"`
-	Name string `json:"name"`
+	Name  string `json:"name"`
+	Token string `json:"token"`
+}
+
+type TokenPayload struct {
+	JudgeCode string `json:"judgeCode"`
+	jwt.StandardClaims
+}
+
+func getToken(code string) string {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, TokenPayload{
+		code,
+		jwt.StandardClaims{
+			Issuer: "akshitgrover",
+		},
+	})
+	str, _ := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+	return str
+}
+
+func parseToken(str string) (string, bool) {
+	token, _ := jwt.ParseWithClaims(str, &TokenPayload{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(os.Getenv("JWT_SECRET")), nil
+	})
+	if !token.Valid {
+		return "", false
+	}
+	claims, _ := token.Claims.(*TokenPayload)
+	return claims.JudgeCode, true
 }
 
 func Login(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
@@ -42,7 +70,8 @@ func Login(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
 			res.Write([]byte("{\"message\":\"Invalid username/password\"}"))
 			return
 		} else {
-			response, err := json.Marshal(LoginResponse{Code: users[0].UniqueCode, Name: users[0].Name})
+			token := getToken(users[0].UniqueCode)
+			response, err := json.Marshal(LoginResponse{Token: token, Name: users[0].Name})
 			if err != nil {
 				res.WriteHeader(500)
 				res.Write([]byte("{\"message\":\"Internal Server Error\"}"))
@@ -63,11 +92,17 @@ func FetchTeam(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
 			res.Write([]byte("{\"message\":\"Method not allowed\"}"))
 			return
 		}
+		tokens := req.Header["Authorization"]
+		if len(tokens) == 0 {
+			res.WriteHeader(401)
+			res.Write([]byte("{\"message\":\"Unauthorized\"}"))
+			return
+		}
 		teamCode := req.FormValue("teamCode")
-		judgeCode := req.FormValue("judgeCode")
-		if judgeCode == "" {
-			res.WriteHeader(400)
-			res.Write([]byte("{\"message\":\"Judge code is required\"}"))
+		judgeCode, b := parseToken(tokens[0])
+		if !b {
+			res.WriteHeader(401)
+			res.Write([]byte("{\"message\":\"Unauthorized\"}"))
 			return
 		}
 		if teamCode == "" {
@@ -83,7 +118,6 @@ func FetchTeam(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
 			return
 		}
 		team := teams[0]
-		fmt.Println(team)
 		if team.Eliminated {
 			res.WriteHeader(409)
 			res.Write([]byte("{\"message\":\"Team is eliminated\"}"))
@@ -136,6 +170,18 @@ func PostProblemStatement(db *mgo.Database) func(res http.ResponseWriter,
 			res.Write([]byte("{\"message\":\"Method not allowed\"}"))
 			return
 		}
+		tokens := req.Header["Authorization"]
+		if len(tokens) == 0 {
+			res.WriteHeader(401)
+			res.Write([]byte("{\"message\":\"Unauthorized\"}"))
+			return
+		}
+		_, b := parseToken(tokens[0])
+		if !b {
+			res.WriteHeader(401)
+			res.Write([]byte("{\"message\":\"Unauthorized\"}"))
+			return
+		}
 		err := req.ParseForm()
 		if err != nil {
 			res.WriteHeader(400)
@@ -177,6 +223,18 @@ func PostInsp1(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
 		if req.Method != "POST" {
 			res.WriteHeader(405)
 			res.Write([]byte("{\"message\":\"Method not allowed\"}"))
+			return
+		}
+		tokens := req.Header["Authorization"]
+		if len(tokens) == 0 {
+			res.WriteHeader(401)
+			res.Write([]byte("{\"message\":\"Unauthorized\"}"))
+			return
+		}
+		_, b := parseToken(tokens[0])
+		if !b {
+			res.WriteHeader(401)
+			res.Write([]byte("{\"message\":\"Unauthorized\"}"))
 			return
 		}
 		err := req.ParseForm()
@@ -231,6 +289,18 @@ func PostInsp2(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
 			res.Write([]byte("{\"message\":\"Method not allowed\"}"))
 			return
 		}
+		tokens := req.Header["Authorization"]
+		if len(tokens) == 0 {
+			res.WriteHeader(401)
+			res.Write([]byte("{\"message\":\"Unauthorized\"}"))
+			return
+		}
+		_, b := parseToken(tokens[0])
+		if !b {
+			res.WriteHeader(401)
+			res.Write([]byte("{\"message\":\"Unauthorized\"}"))
+			return
+		}
 		err := req.ParseForm()
 		if err != nil {
 			res.WriteHeader(400)
@@ -281,6 +351,18 @@ func PostEval(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
 			res.Write([]byte("{\"message\":\"Method not allowed\"}"))
 			return
 		}
+		tokens := req.Header["Authorization"]
+		if len(tokens) == 0 {
+			res.WriteHeader(401)
+			res.Write([]byte("{\"message\":\"Unauthorized\"}"))
+			return
+		}
+		judgeCode, b := parseToken(tokens[0])
+		if !b {
+			res.WriteHeader(401)
+			res.Write([]byte("{\"message\":\"Unauthorized\"}"))
+			return
+		}
 		err := req.ParseForm()
 		if err != nil {
 			res.WriteHeader(400)
@@ -288,7 +370,6 @@ func PostEval(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
 			return
 		}
 		teamCode := req.PostFormValue("teamCode")
-		judgeCode := req.PostFormValue("judgeCode")
 		simp := req.PostFormValue("simp")
 		des := req.PostFormValue("des")
 		srtp := req.PostFormValue("srtp")
