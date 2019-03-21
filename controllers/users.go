@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/ACM-VIT/c2c_evaluation_portal/models"
 	"github.com/globalsign/mgo"
@@ -153,6 +154,108 @@ func PostProblemStatement(db *mgo.Database) func(res http.ResponseWriter,
 			"uniqueCode": teamCode,
 		}, bson.M{
 			"$set": bson.M{"track": track, "problemStatement": ps},
+		})
+		if err != nil {
+			res.WriteHeader(500)
+			res.Write([]byte("{\"message\":\"Internal Server Error\"}"))
+			return
+		}
+		if ci.Matched == 0 {
+			res.WriteHeader(200)
+			res.Write([]byte("{\"message\":\"Team not found\"}"))
+			return
+		}
+		res.WriteHeader(200)
+		res.Write([]byte("{\"message\":\"Updated successfully\"}"))
+		return
+	}
+}
+
+func PostInsp1(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
+	return func(res http.ResponseWriter, req *http.Request) {
+		res.Header().Set("Content-Type", "application/json")
+		if req.Method != "POST" {
+			res.WriteHeader(405)
+			res.Write([]byte("{\"message\":\"Method not allowed\"}"))
+			return
+		}
+		err := req.ParseForm()
+		if err != nil {
+			res.WriteHeader(400)
+			res.Write([]byte("{\"message\":\"Invalid form data\"}"))
+			return
+		}
+		teamCode := req.PostFormValue("teamCode")
+		sps := req.PostFormValue("sps")
+		ups := req.PostFormValue("ups")
+		as := req.PostFormValue("as")
+		remarks := req.PostFormValue("remarks")
+		if teamCode == "" || sps == "" || ups == "" || as == "" || remarks == "" {
+			res.WriteHeader(400)
+			res.Write([]byte("{\"message\":\"Incomplete form data\"}"))
+			return
+		}
+		data := map[string]int{}
+		data["ups"], _ = strconv.Atoi(ups)
+		data["sps"], _ = strconv.Atoi(sps)
+		data["as"], _ = strconv.Atoi(as)
+		ci, err := db.C("teams").UpdateAll(bson.M{
+			"uniqueCode": teamCode,
+		}, bson.M{
+			"$set": bson.M{
+				"insp1":        data,
+				"insp1Remarks": remarks,
+			},
+		})
+		if err != nil {
+			res.WriteHeader(500)
+			res.Write([]byte("{\"message\":\"Internal Server Error\"}"))
+			return
+		}
+		if ci.Matched == 0 {
+			res.WriteHeader(200)
+			res.Write([]byte("{\"message\":\"Team not found\"}"))
+			return
+		}
+		res.WriteHeader(200)
+		res.Write([]byte("{\"message\":\"Updated successfully\"}"))
+		return
+	}
+}
+
+func PostInsp2(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
+	return func(res http.ResponseWriter, req *http.Request) {
+		res.Header().Set("Content-Type", "application/json")
+		if req.Method != "POST" {
+			res.WriteHeader(405)
+			res.Write([]byte("{\"message\":\"Method not allowed\"}"))
+			return
+		}
+		err := req.ParseForm()
+		if err != nil {
+			res.WriteHeader(400)
+			res.Write([]byte("{\"message\":\"Invalid form data\"}"))
+			return
+		}
+		teamCode := req.PostFormValue("teamCode")
+		imp := req.PostFormValue("imp")
+		pc := req.PostFormValue("pc")
+		remarks := req.PostFormValue("remarks")
+		if teamCode == "" || imp == "" || pc == "" || remarks == "" {
+			res.WriteHeader(400)
+			res.Write([]byte("{\"message\":\"Incomplete form data\"}"))
+			return
+		}
+		data := map[string]int{}
+		data["imp"], _ = strconv.Atoi(imp)
+		data["pc"], _ = strconv.Atoi(pc)
+		ci, err := db.C("teams").UpdateAll(bson.M{
+			"uniqueCode": teamCode,
+		}, bson.M{
+			"$set": bson.M{
+				"insp2":        data,
+				"insp2Remarks": remarks,
+			},
 		})
 		if err != nil {
 			res.WriteHeader(500)
