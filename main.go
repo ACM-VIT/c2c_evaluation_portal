@@ -17,6 +17,7 @@ func main() {
 	db := session.DB("evaluation")
 	http.HandleFunc("/login", controllers.Login(db))
 	http.HandleFunc("/fetch", controllers.FetchTeam(db))
+	http.HandleFunc("/postps", controllers.PostProblemStatement(db))
 	if err != nil {
 		fmt.Println("Error connecting to mongodb")
 	}
