@@ -47,6 +47,14 @@ func parseToken(str string) (string, bool) {
 func Login(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
 	return func(res http.ResponseWriter, req *http.Request) {
 		res.Header().Set("Content-Type", "application/json")
+		res.Header().Set("Access-Control-Allow-Origin", "*")
+		res.Header().Set("Access-Control-Allow-Headers", "*")
+		res.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD")
+		if req.Method == "OPTIONS" {
+			res.WriteHeader(200)
+			res.Write([]byte(""))
+			return
+		}
 		if req.Method != "POST" {
 			res.WriteHeader(405)
 			res.Write([]byte("{\"message\":\"Method not allowed\"}"))
@@ -87,6 +95,14 @@ func Login(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
 func FetchTeam(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
 	return func(res http.ResponseWriter, req *http.Request) {
 		res.Header().Set("Content-Type", "application/json")
+		res.Header().Set("Access-Control-Allow-Origin", "*")
+		res.Header().Set("Access-Control-Allow-Headers", "*")
+		res.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD")
+		if req.Method == "OPTIONS" {
+			res.WriteHeader(200)
+			res.Write([]byte(""))
+			return
+		}
 		if req.Method != "GET" {
 			res.WriteHeader(405)
 			res.Write([]byte("{\"message\":\"Method not allowed\"}"))
@@ -165,6 +181,14 @@ func PostProblemStatement(db *mgo.Database) func(res http.ResponseWriter,
 ) {
 	return func(res http.ResponseWriter, req *http.Request) {
 		res.Header().Set("Content-Type", "application/json")
+		res.Header().Set("Access-Control-Allow-Origin", "*")
+		res.Header().Set("Access-Control-Allow-Headers", "*")
+		res.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD")
+		if req.Method == "OPTIONS" {
+			res.WriteHeader(200)
+			res.Write([]byte(""))
+			return
+		}
 		if req.Method != "POST" {
 			res.WriteHeader(405)
 			res.Write([]byte("{\"message\":\"Method not allowed\"}"))
@@ -220,6 +244,14 @@ func PostProblemStatement(db *mgo.Database) func(res http.ResponseWriter,
 func PostInsp1(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
 	return func(res http.ResponseWriter, req *http.Request) {
 		res.Header().Set("Content-Type", "application/json")
+		res.Header().Set("Access-Control-Allow-Origin", "*")
+		res.Header().Set("Access-Control-Allow-Headers", "*")
+		res.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD")
+		if req.Method == "OPTIONS" {
+			res.WriteHeader(200)
+			res.Write([]byte(""))
+			return
+		}
 		if req.Method != "POST" {
 			res.WriteHeader(405)
 			res.Write([]byte("{\"message\":\"Method not allowed\"}"))
@@ -284,6 +316,14 @@ func PostInsp1(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
 func PostInsp2(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
 	return func(res http.ResponseWriter, req *http.Request) {
 		res.Header().Set("Content-Type", "application/json")
+		res.Header().Set("Access-Control-Allow-Origin", "*")
+		res.Header().Set("Access-Control-Allow-Headers", "*")
+		res.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD")
+		if req.Method == "OPTIONS" {
+			res.WriteHeader(200)
+			res.Write([]byte(""))
+			return
+		}
 		if req.Method != "POST" {
 			res.WriteHeader(405)
 			res.Write([]byte("{\"message\":\"Method not allowed\"}"))
@@ -346,6 +386,14 @@ func PostInsp2(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
 func PostEval(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
 	return func(res http.ResponseWriter, req *http.Request) {
 		res.Header().Set("Content-Type", "application/json")
+		res.Header().Set("Access-Control-Allow-Origin", "*")
+		res.Header().Set("Access-Control-Allow-Headers", "*")
+		res.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD")
+		if req.Method == "OPTIONS" {
+			res.WriteHeader(200)
+			res.Write([]byte(""))
+			return
+		}
 		if req.Method != "POST" {
 			res.WriteHeader(405)
 			res.Write([]byte("{\"message\":\"Method not allowed\"}"))
