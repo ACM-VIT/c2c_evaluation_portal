@@ -16,6 +16,7 @@ func main() {
 	session, err := mgo.Dial(os.Getenv("MONGO_URL"))
 	db := session.DB("evaluation")
 	http.HandleFunc("/login", controllers.Login(db))
+	http.HandleFunc("/fetch", controllers.FetchTeam(db))
 	if err != nil {
 		fmt.Println("Error connecting to mongodb")
 	}
