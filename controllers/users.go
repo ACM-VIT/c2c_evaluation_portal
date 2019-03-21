@@ -70,7 +70,7 @@ func Login(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
 			res.Write([]byte("{\"message\":\"Invalid username/password\"}"))
 			return
 		} else {
-			token := getToken(users[0].UniqueCode)
+			token := getToken(users[0].Username)
 			response, err := json.Marshal(LoginResponse{Token: token, Name: users[0].Name})
 			if err != nil {
 				res.WriteHeader(500)
