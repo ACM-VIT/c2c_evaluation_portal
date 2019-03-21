@@ -273,6 +273,64 @@ func PostInsp2(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
 	}
 }
 
+func PostEval(db *mgo.Database) func(http.ResponseWriter, *http.Request) {
+	return func(res http.ResponseWriter, req *http.Request) {
+		res.Header().Set("Content-Type", "application/json")
+		if req.Method != "POST" {
+			res.WriteHeader(405)
+			res.Write([]byte("{\"message\":\"Method not allowed\"}"))
+			return
+		}
+		err := req.ParseForm()
+		if err != nil {
+			res.WriteHeader(400)
+			res.Write([]byte("{\"message\":\"Invalid form data\"}"))
+			return
+		}
+		teamCode := req.PostFormValue("teamCode")
+		judgeCode := req.PostFormValue("judgeCode")
+		simp := req.PostFormValue("simp")
+		des := req.PostFormValue("des")
+		srtp := req.PostFormValue("srtp")
+		tech := req.PostFormValue("tech")
+		crp := req.PostFormValue("crp")
+		remarks := req.PostFormValue("remarks")
+		if teamCode == "" || judgeCode == "" || des == "" || srtp == "" ||
+			tech == "" || crp == "" || remarks == "" {
+			res.WriteHeader(400)
+			res.Write([]byte("{\"message\":\"Incomplete form data\"}"))
+			return
+		}
+		data := map[string]int{}
+		data["simp"], _ = strconv.Atoi(simp)
+		data["des"], _ = strconv.Atoi(des)
+		data["srtp"], _ = strconv.Atoi(srtp)
+		data["tech"], _ = strconv.Atoi(tech)
+		data["crp"], _ = strconv.Atoi(crp)
+		ci, err := db.C("teams").UpdateAll(bson.M{
+			"uniqueCode": teamCode,
+		}, bson.M{
+			"$set": bson.M{
+				"eval." + judgeCode:        data,
+				"evalRemarks." + judgeCode: remarks,
+			},
+		})
+		if err != nil {
+			res.WriteHeader(500)
+			res.Write([]byte("{\"message\":\"Internal Server Error\"}"))
+			return
+		}
+		if ci.Matched == 0 {
+			res.WriteHeader(200)
+			res.Write([]byte("{\"message\":\"Team not found\"}"))
+			return
+		}
+		res.WriteHeader(200)
+		res.Write([]byte("{\"message\":\"Updated successfully\"}"))
+		return
+	}
+}
+
 func sendJson(res http.ResponseWriter, v interface{}) {
 	b, err := json.Marshal(v)
 	if err != nil {

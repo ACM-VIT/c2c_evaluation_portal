@@ -20,6 +20,7 @@ func main() {
 	http.HandleFunc("/postps", controllers.PostProblemStatement(db))
 	http.HandleFunc("/postinsp1", controllers.PostInsp1(db))
 	http.HandleFunc("/postinsp2", controllers.PostInsp2(db))
+	http.HandleFunc("/posteval", controllers.PostEval(db))
 	if err != nil {
 		fmt.Println("Error connecting to mongodb")
 	}
