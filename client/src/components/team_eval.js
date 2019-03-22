@@ -8,6 +8,7 @@ import axios from 'axios';
 import url from './url.js'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import pbs from './pbs.json'
 
 let BASE_URL=url.initial
 
@@ -18,6 +19,8 @@ class TeamEval extends Component{
     }
 
     state={
+        state:'',
+
         showheads:false,
         showoption1:false,
         showoption2:false,
@@ -52,10 +55,6 @@ class TeamEval extends Component{
         insp3_5:0,
         insp3_remarks:'',
 
-        inspection2:{},
-
-        evaluation_panel:{},
-
         anchorEl:null
     }
 
@@ -76,34 +75,63 @@ class TeamEval extends Component{
     getContent=()=>{
         let params=new URLSearchParams()
         params.append('teamCode',localStorage.getItem('c2c_judge_teamno'))
-        axios.get(BASE_URL+'/fetch',params,{
-            headers:{
-                'Authorization':localStorage.getItem('c2c_judge_auth')
-            }
-        }).then((res)=>{
-            console.log(res.data)
+        axios.get('https://salty-citadel-13883.herokuapp.com/tracks').then((res)=>{
+            axios.get(BASE_URL+'/fetch',{
+                headers:{
+                    'Authorization':localStorage.getItem('c2c_judge_auth')
+                },
+                params
+            }).then((res)=>{
+                console.log(res.data)
+                this.setState({
+                    team_name:res.data.teamId,
+                    team_members:res.data.names,
+                    state:res.data.state
+                })
+    
+                if(this.state.state=="ps"){
+                    // this.loadproblemstatements()
+                }
+                else if(this.state.state=="insp1"){
+                    this.setState({
+                        team_track:res.data.track,
+                        team_problem_statement:res.data.problemStatement,
+                        showheads:true,
+                        showoption1:true
+                    })
+                }
+                else if(this.state.state=="insp2"){
+                    this.setState({
+                        team_track:res.data.track,
+                        team_problem_statement:res.data.problemStatement,
+                        showheads:true,
+                        showoption1:true,
+                        showoption2:true,
+                        insp1_remarks:res.data.insp1Remarks,
+                        insp1_1:res.data.insp1['sps'],
+                        insp1_2:res.data.insp1['ups'],
+                        insp1_3:res.data.insp1['as']
+                    })
+                }
+                else if(this.state.state=="eval"){
+                    this.setState({
+                        team_track:res.data.track,
+                        team_problem_statement:res.data.problemStatement,
+                        showheads:true,
+                        showoption1:true,
+                        showoption2:true,
+                        showoption3:true,
+                        insp1_remarks:res.data.insp1Remarks,
+                        insp1_1:res.data.insp1['sps'],
+                        insp1_2:res.data.insp1['ups'],
+                        insp1_3:res.data.insp1['as'],
+                        insp2_remarks:res.data.insp2Remarks,
+                        insp2_1:res.data.insp2['imp'],
+                        insp2_2:res.data.insp2['pc']
+                    })
+                }
+            })
         })
-
-        // this.setState({
-        //     team_name:res.data.name,
-        //     team_members:res.data.members
-        // })
-        // if(state=="ps"){
-        //     // this.loadproblemstatements()
-        // }
-        // else if(state=="insp1"){
-        //     // this.setState({
-        //     //     team_track:res.data.track,
-        //     //     team_problem_statement:res.data.problem_statement
-        //     // })
-        //     // this.doinspection1()
-        // }
-        // else if(state=="insp2"){
-        //     // this.doinspection2()
-        // }
-        // else if(state=="insp3"){
-        //     // this.doinspection3()
-        // }
     }
 
     loadproblemstatements=()=>{
@@ -138,7 +166,7 @@ class TeamEval extends Component{
         params.append('as',this.state.insp1_3)
         params.append('remarks',this.state.insp1_remarks)
 
-        console.log(params)
+        console.log(this.state)
 
         axios.post(BASE_URL+'/postinsp1',params,{
             headers:{
@@ -146,6 +174,7 @@ class TeamEval extends Component{
             }
         }).then((res)=>{
             console.log(res.data)
+            window.location.reload()
         })
     }
 
@@ -164,6 +193,7 @@ class TeamEval extends Component{
             }
         }).then((res)=>{
             console.log(res.data)
+            window.location.reload()
         })
     }
 
@@ -177,14 +207,15 @@ class TeamEval extends Component{
         params.append('crp',this.state.insp3_5)
         params.append('remarks',this.state.insp3_remarks)
 
-        console.log(params)
+        console.log(this.state)
 
-        axios.post(BASE_URL+'/postinsp3',params,{
+        axios.post(BASE_URL+'/posteval',params,{
             headers:{
                 'Authorization':localStorage.getItem('c2c_judge_auth')
             }
         }).then((res)=>{
             console.log(res.data)
+            window.location.reload()
         })
     }
 
@@ -195,7 +226,6 @@ class TeamEval extends Component{
 
     render(){
         const { anchorEl } = this.state;
-        let team_members=['shivank','aditya','akshit']
         return(
             <div className="team_eval_div margindown_50">
                 {/* <img className="green1" src={green1} />
@@ -206,7 +236,7 @@ class TeamEval extends Component{
                 <div className="team_details">
                     <Typography component="p" className="team_name big green bold">{this.state.team_name}</Typography>
                     {
-                        team_members.map((val,ind)=>(
+                        this.state.team_members && this.state.team_members.map((val,ind)=>(
                             <Typography component="p" className="team_member_name same_line white little_big">{val}</Typography>
                         ))
                     }
@@ -215,7 +245,7 @@ class TeamEval extends Component{
                     <Typography component="p" className="big green little_up bold">Problem Statement</Typography>
                     {this.state.team_problem_statement && <Typography component="p" className="little_big white">{this.state.team_problem_statement}</Typography>}
                     {this.state.team_problem_statement=="Other" && <textarea rows="5" cols="150" onChange={this.handleChange('team_own_ps')} className="message_ps_box" value={this.state.team_own_ps}></textarea>}
-                    <Button onClick={this.dopsselection} className="ps_submit_btn">Submit</Button>
+                    {!this.state.team_problem_statement && <Button onClick={this.dopsselection} className="ps_submit_btn">Submit</Button>}
                 </div>
 
                 {this.state.showheads && !this.state.open1 && <div className="tech_inspect_1">
@@ -235,7 +265,7 @@ class TeamEval extends Component{
                         <div className="">
                         <Typography component="p" className="big white bold same_line center-vert">Significance of problem statement</Typography>
                         <div className="same_line center-vert">
-                        <input type="text" onChange={this.handleChange('insp1_1')} className="score_inp same_line center-vert" id="score1" value={this.state.insp1_2} />
+                        <input type="text" onChange={this.handleChange('insp1_1')} className="score_inp same_line center-vert" id="score1" value={this.state.insp1_1} />
                         <Typography component="p" className="green same_line center-vert big">/10</Typography>
                         </div>
                         </div>
@@ -281,7 +311,7 @@ class TeamEval extends Component{
                 {this.state.open2 && <div className="tech_inspect_2 back_green">
                     <div className="opener2_green">
                         <Typography component="p" className="big white bold same_line">Technical Inspection 2</Typography>
-                        {this.state.showpotion2 && <Typography component="p" onClick={()=>{ this.setState({ open2:!this.state.open2 }) }} className="big white right same_line pointer">Close</Typography>}
+                        {this.state.showoption2 && <Typography component="p" onClick={()=>{ this.setState({ open2:!this.state.open2 }) }} className="big white right same_line pointer">Close</Typography>}
                     </div>
                 </div>}
                     {this.state.open2 && <div className="scores2">
@@ -310,7 +340,7 @@ class TeamEval extends Component{
                         </div>
 
                         <Typography component="p" className="big white bold margintop_30">Remarks</Typography>
-                        <textarea rows="10" cols="150" onChange={this.handleChange('insp2_remarks')} className="message_box" val={this.state.insp2_remarks} ></textarea>
+                        <textarea rows="10" cols="150" onChange={this.handleChange('insp2_remarks')} className="message_box" value={this.state.insp2_remarks}></textarea>
 
                         <Button onClick={this.doinspection2} className="ps_submit_btn">Submit</Button>
                     </div>}
