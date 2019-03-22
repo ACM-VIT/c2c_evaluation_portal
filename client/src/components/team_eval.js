@@ -201,13 +201,15 @@ class TeamEval extends Component{
                     insp2_remarks:res.data.insp2Remarks,
                     insp2_1:res.data.insp2['imp'],
                     insp2_2:res.data.insp2['pc'],
-                    insp3_remarks:res.data.insp3Remarks,
-                    insp3_1:res.data.insp3['simp'],
-                    insp3_2:res.data.insp3['des'],
-                    insp3_3:res.data.insp3['srtp'],
-                    insp3_4:res.data.insp3['tech'],
-                    insp3_5:res.data.insp3['crp']
+                    insp3_remarks:res.data.evalRemarks,
+                    insp3_1:res.data.eval['simp'],
+                    insp3_2:res.data.eval['des'],
+                    insp3_3:res.data.eval['srtp'],
+                    insp3_4:res.data.eval['tech'],
+                    insp3_5:res.data.eval['crp']
                 })
+
+                console.log(this.state)
             }
         })
     }
@@ -468,7 +470,7 @@ class TeamEval extends Component{
                         <div className="">
                         <Typography component="p" className="big white bold same_line center-vert">Simplicity</Typography>
                         <div className="same_line center-vert">
-                        <input type="text" onChange={this.handleChange('insp3_1')} className="score_inp same_line center-vert" id="score1" val={this.state.insp3_1} />
+                        <input type="text" onChange={this.handleChange('insp3_1')} className="score_inp same_line center-vert" id="score1" value={this.state.insp3_1} />
                         <Typography component="p" className="green same_line center-vert big">/10</Typography>
                         </div>
                         </div>
@@ -476,7 +478,7 @@ class TeamEval extends Component{
                         <div className="margintop_30">
                         <Typography component="p" className="big white bold same_line center-vert">Design</Typography>
                         <div className="same_line center-vert">
-                        <input type="text" onChange={this.handleChange('insp3_2')} className="score_inp same_line center-vert" id="score1" val={this.state.insp3_2} />
+                        <input type="text" onChange={this.handleChange('insp3_2')} className="score_inp same_line center-vert" id="score1" value={this.state.insp3_2} />
                         <Typography component="p" className="green same_line center-vert big">/10</Typography>
                         </div>
                         </div>
@@ -484,7 +486,7 @@ class TeamEval extends Component{
                         <div className="margintop_30">
                         <Typography component="p" className="big white bold same_line center-vert">Solves a real time problem</Typography>
                         <div className="same_line center-vert">
-                        <input type="text" onChange={this.handleChange('insp3_3')} className="score_inp same_line center-vert" id="score1" val={this.state.insp3_3} />
+                        <input type="text" onChange={this.handleChange('insp3_3')} className="score_inp same_line center-vert" id="score1" value={this.state.insp3_3} />
                         <Typography component="p" className="green same_line center-vert big">/10</Typography>
                         </div>
                         </div>
@@ -492,7 +494,7 @@ class TeamEval extends Component{
                         <div className="margintop_30">
                         <Typography component="p" className="big white bold same_line center-vert">Technology</Typography>
                         <div className="same_line center-vert">
-                        <input type="text" onChange={this.handleChange('insp3_4')} className="score_inp same_line center-vert" id="score1" val={this.state.insp3_4} />
+                        <input type="text" onChange={this.handleChange('insp3_4')} className="score_inp same_line center-vert" id="score1" value={this.state.insp3_4} />
                         <Typography component="p" className="green same_line center-vert big">/10</Typography>
                         </div>
                         </div>
@@ -500,7 +502,7 @@ class TeamEval extends Component{
                         <div className="margintop_30">
                         <Typography component="p" className="big white bold same_line center-vert">Could it be a real product?</Typography>
                         <div className="same_line center-vert">
-                        <input type="text" onChange={this.handleChange('insp3_5')} className="score_inp same_line center-vert" id="score1" val={this.state.insp3_5} />
+                        <input type="text" onChange={this.handleChange('insp3_5')} className="score_inp same_line center-vert" id="score1" value={this.state.insp3_5} />
                         <Typography component="p" className="green same_line center-vert big">/10</Typography>
                         </div>
                         </div>
