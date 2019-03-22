@@ -148,6 +148,10 @@
     font-size:28px!important;
 }
 
+.big_view{
+    font-size:28px!important;
+}
+
 .little_big{
     font-size:20px!important;
 }
@@ -327,6 +331,10 @@
 
     .big{
         font-size:22px!important;
+    }
+
+    .big_view{
+        font-size:18px!important;
     }
 
     .little_big{

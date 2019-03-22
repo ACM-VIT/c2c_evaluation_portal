@@ -359,14 +359,14 @@ class TeamEval extends Component{
                 {this.state.showheads && !this.state.open1 && <div className="tech_inspect_1">
                     <div className="opener1">
                         <Typography component="p" className="big white bold same_line">Technical Inspection 1</Typography>
-                        {this.state.showoption1 && <Typography component="p" onClick={()=>{ this.setState({ open1:!this.state.open1 }) }} className="big green right same_line pointer">View</Typography>}
+                        {this.state.showoption1 && <Typography component="p" onClick={()=>{ this.setState({ open1:!this.state.open1 }) }} className="big_view green right same_line pointer">View</Typography>}
                     </div>
                 </div>}
 
                 {this.state.open1 && <div className="tech_inspect_1 back_green">
                     <div className="opener1_green">
                         <Typography component="p" className="big white bold same_line">Technical Inspection 1</Typography>
-                        {this.state.showoption1 && <Typography component="p" onClick={()=>{ this.setState({ open1:!this.state.open1 }) }} className="big white right same_line pointer">Close</Typography>}
+                        {this.state.showoption1 && <Typography component="p" onClick={()=>{ this.setState({ open1:!this.state.open1 }) }} className="big_view white right same_line pointer">Close</Typography>}
                     </div>
                 </div>}
                     {this.state.open1 && <div className="scores1">
@@ -412,14 +412,14 @@ class TeamEval extends Component{
                     {this.state.showheads && !this.state.open2 && <div className="tech_inspect_2">
                     <div className="opener2">
                         <Typography component="p" className="big white bold same_line">Technical Inspection 2</Typography>
-                        {this.state.showoption2 && <Typography component="p" onClick={()=>{ this.setState({ open2:!this.state.open2 }) }} className="big green right same_line pointer">View</Typography>}
+                        {this.state.showoption2 && <Typography component="p" onClick={()=>{ this.setState({ open2:!this.state.open2 }) }} className="big_view green right same_line pointer">View</Typography>}
                     </div>
                 </div>}
 
                 {this.state.open2 && <div className="tech_inspect_2 back_green">
                     <div className="opener2_green">
                         <Typography component="p" className="big white bold same_line">Technical Inspection 2</Typography>
-                        {this.state.showoption2 && <Typography component="p" onClick={()=>{ this.setState({ open2:!this.state.open2 }) }} className="big white right same_line pointer">Close</Typography>}
+                        {this.state.showoption2 && <Typography component="p" onClick={()=>{ this.setState({ open2:!this.state.open2 }) }} className="big_view white right same_line pointer">Close</Typography>}
                     </div>
                 </div>}
                     {this.state.open2 && <div className="scores2">
@@ -456,14 +456,14 @@ class TeamEval extends Component{
                     {this.state.showheads && !this.state.open3 && <div className="tech_inspect_3">
                     <div className="opener3">
                         <Typography component="p" className="big white bold same_line">Evaluation Panel</Typography>
-                        {this.state.showoption3 && <Typography component="p" onClick={()=>{ this.setState({ open3:!this.state.open3 }) }} className="big green right same_line pointer">View</Typography>}
+                        {this.state.showoption3 && <Typography component="p" onClick={()=>{ this.setState({ open3:!this.state.open3 }) }} className="big_view green right same_line pointer">View</Typography>}
                     </div>
                 </div>}
 
                 {this.state.open3 && <div className="tech_inspect_3 back_green">
                     <div className="opener3_green">
                         <Typography component="p" className="big white bold same_line">Evaluation Panel</Typography>
-                        {this.state.showoption3 && <Typography component="p" onClick={()=>{ this.setState({ open3:!this.state.open3 }) }} className="big white right same_line pointer">Close</Typography>}
+                        {this.state.showoption3 && <Typography component="p" onClick={()=>{ this.setState({ open3:!this.state.open3 }) }} className="big_view white right same_line pointer">Close</Typography>}
                     </div>
                 </div>}
                     {this.state.open3 && <div className="scores3">
