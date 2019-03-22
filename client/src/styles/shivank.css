@@ -276,7 +276,6 @@
     color:white!important;
     padding:5px 15px!important;
     font-size:20px!important;
-    margin-top:20px!important;
 }
 
 .ps_submit_btn{
@@ -286,6 +285,14 @@
     color:white!important;
     padding:5px 15px!important;
     border-radius:10px!important;
+}
+
+.tracks_dropdown_btn,.pbs_dropdown_btn{
+    background-color:white!important;
+    color:#48BA86!important;
+    padding:3px 10px!important;
+    font-size:14px!important;
+    font-weight:bold!important;
 }
 
 @media only screen and (max-width:600px){

@@ -8,7 +8,6 @@ import axios from 'axios';
 import url from './url.js'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import pbs from './pbs.json'
 
 let BASE_URL=url.initial
 
@@ -31,7 +30,9 @@ class TeamEval extends Component{
         open3:false,
 
         tracks:[],
-        problem_statements:[],
+        pbs:[],
+        set_track:"",
+        set_pbs:"",
 
         team_track:"",
         team_problem_statement:"",
@@ -55,15 +56,47 @@ class TeamEval extends Component{
         insp3_5:0,
         insp3_remarks:'',
 
-        anchorEl:null
+        anchorEl1:null,
+        anchorEl2:null,
+        selectedIndex1: 0,
+        selectedIndex2: 0
     }
 
-    handleClick = event => {
-        this.setState({ anchorEl: event.currentTarget });
+    handleClick1 = event => {
+        this.setState({ anchorEl1: event.currentTarget },()=>{
+        });
+    };
+
+    handleClick2 = event => {
+        this.setState({ anchorEl2: event.currentTarget });
+    };
+
+    handleMenuItemClick1 = (event, index) => {
+        this.setState({ selectedIndex1: index, anchorEl1: null });
+
+        this.setState({
+            set_track:this.state.tracks[index]
+        },()=>{
+            this.setState({
+                set_pbs:this.state.pbs[index][0]
+            })
+        })
+    };
+
+    handleMenuItemClick2 = (event, index) => {
+        this.setState({ selectedIndex2: index, anchorEl2: null });
+
+        this.setState({
+            set_pbs:this.state.pbs[this.state.selectedIndex1][index]
+        })
     };
     
-    handleClose = () => {
-        this.setState({ anchorEl: null });
+    handleClose1 = () => {
+        this.setState({ anchorEl1: null });
+    };
+
+    handleClose2 = () => {
+        this.setState({ anchorEl2: null });
     };
 
     handleChange = name => event => {
@@ -76,78 +109,122 @@ class TeamEval extends Component{
         let params=new URLSearchParams()
         params.append('teamCode',localStorage.getItem('c2c_judge_teamno'))
         axios.get('https://salty-citadel-13883.herokuapp.com/tracks').then((res)=>{
-            axios.get(BASE_URL+'/fetch',{
-                headers:{
-                    'Authorization':localStorage.getItem('c2c_judge_auth')
-                },
-                params
-            }).then((res)=>{
-                console.log(res.data)
-                this.setState({
-                    team_name:res.data.teamId,
-                    team_members:res.data.names,
-                    state:res.data.state
+            console.log(res.data)
+            let data=res.data.data
+            let pbs=[]
+            let tracks=[]
+            
+            data.forEach((val,ind)=>{
+                if(!(val.track in tracks)){
+                    tracks.push(val.track)
+                }
+            })
+            
+            tracks.forEach((val,ind)=>{
+                let newt=[]
+                data.forEach((value,index)=>{
+                    if(value.track==val){
+                        newt.push(value.problem)
+                    }
                 })
-    
-                if(this.state.state=="ps"){
-                    // this.loadproblemstatements()
-                }
-                else if(this.state.state=="insp1"){
-                    this.setState({
-                        team_track:res.data.track,
-                        team_problem_statement:res.data.problemStatement,
-                        showheads:true,
-                        showoption1:true
-                    })
-                }
-                else if(this.state.state=="insp2"){
-                    this.setState({
-                        team_track:res.data.track,
-                        team_problem_statement:res.data.problemStatement,
-                        showheads:true,
-                        showoption1:true,
-                        showoption2:true,
-                        insp1_remarks:res.data.insp1Remarks,
-                        insp1_1:res.data.insp1['sps'],
-                        insp1_2:res.data.insp1['ups'],
-                        insp1_3:res.data.insp1['as']
-                    })
-                }
-                else if(this.state.state=="eval"){
-                    this.setState({
-                        team_track:res.data.track,
-                        team_problem_statement:res.data.problemStatement,
-                        showheads:true,
-                        showoption1:true,
-                        showoption2:true,
-                        showoption3:true,
-                        insp1_remarks:res.data.insp1Remarks,
-                        insp1_1:res.data.insp1['sps'],
-                        insp1_2:res.data.insp1['ups'],
-                        insp1_3:res.data.insp1['as'],
-                        insp2_remarks:res.data.insp2Remarks,
-                        insp2_1:res.data.insp2['imp'],
-                        insp2_2:res.data.insp2['pc']
-                    })
-                }
+                newt.push("Other")
+                pbs.push(newt)
+            })
+
+            this.setState({
+                tracks:tracks,
+                pbs:pbs
             })
         })
-    }
-
-    loadproblemstatements=()=>{
-        axios.get('').then((res)=>{
+        axios.get(BASE_URL+'/fetch',{
+            headers:{
+                'Authorization':localStorage.getItem('c2c_judge_auth')
+            },
+            params
+        }).then((res)=>{
+            console.log(res.data)
             this.setState({
-                tracks:'',
-                problem_statements:''
+                team_name:res.data.teamId,
+                team_members:res.data.names,
+                state:res.data.state
             })
+
+            if(this.state.state=="insp1"){
+                this.setState({
+                    team_track:res.data.track,
+                    team_problem_statement:res.data.problemStatement,
+                    showheads:true,
+                    showoption1:true
+                })
+            }
+            else if(this.state.state=="insp2"){
+                this.setState({
+                    team_track:res.data.track,
+                    team_problem_statement:res.data.problemStatement,
+                    showheads:true,
+                    showoption1:true,
+                    showoption2:true,
+                    insp1_remarks:res.data.insp1Remarks,
+                    insp1_1:res.data.insp1['sps'],
+                    insp1_2:res.data.insp1['ups'],
+                    insp1_3:res.data.insp1['as']
+                })
+            }
+            else if(this.state.state=="eval"){
+                this.setState({
+                    team_track:res.data.track,
+                    team_problem_statement:res.data.problemStatement,
+                    showheads:true,
+                    showoption1:true,
+                    showoption2:true,
+                    showoption3:true,
+                    insp1_remarks:res.data.insp1Remarks,
+                    insp1_1:res.data.insp1['sps'],
+                    insp1_2:res.data.insp1['ups'],
+                    insp1_3:res.data.insp1['as'],
+                    insp2_remarks:res.data.insp2Remarks,
+                    insp2_1:res.data.insp2['imp'],
+                    insp2_2:res.data.insp2['pc']
+                })
+            }
+            else if(this.state.state=="done"){
+                this.setState({
+                    team_track:res.data.track,
+                    team_problem_statement:res.data.problemStatement,
+                    showheads:true,
+                    showoption1:true,
+                    showoption2:true,
+                    showoption3:true,
+                    insp1_remarks:res.data.insp1Remarks,
+                    insp1_1:res.data.insp1['sps'],
+                    insp1_2:res.data.insp1['ups'],
+                    insp1_3:res.data.insp1['as'],
+                    insp2_remarks:res.data.insp2Remarks,
+                    insp2_1:res.data.insp2['imp'],
+                    insp2_2:res.data.insp2['pc'],
+                    insp3_remarks:res.data.insp3Remarks,
+                    insp3_1:res.data.insp3['simp'],
+                    insp3_2:res.data.insp3['des'],
+                    insp3_3:res.data.insp3['srtp'],
+                    insp3_4:res.data.insp3['tech'],
+                    insp3_5:res.data.insp3['crp']
+                })
+            }
         })
     }
 
     dopsselection=()=>{
         let params=new URLSearchParams()
         params.append('teamCode',localStorage.getItem('c2c_judge_teamno'))
-        params.append('track',this.state.team_track)
-        params.append('ps',this.state.team_problem_statement)
+        params.append('track',this.state.set_track)
+        if(this.state.set_pbs!=="Other"){
+            params.append('ps',this.state.set_pbs)
+        }
+        else{
+            params.append('ps',this.state.team_own_ps)
+        }
+
+        console.log(this.state)
 
         axios.post(BASE_URL+'/postps',params,{
             headers:{
@@ -155,6 +232,7 @@ class TeamEval extends Component{
             }
         }).then((res)=>{
             console.log(res.data)
+            window.location.reload()
         })
     }
 
@@ -225,13 +303,45 @@ class TeamEval extends Component{
     }
 
     render(){
-        const { anchorEl } = this.state;
+        const { anchorEl1,anchorEl2 } = this.state;
         return(
             <div className="team_eval_div margindown_50">
                 {/* <img className="green1" src={green1} />
                 <img className="green2" src={green2} /> */}
 
                 <C2CLogo />
+                {this.state.tracks && <Menu
+                id="simple-menu"
+                anchorEl={anchorEl1}
+                open={Boolean(anchorEl1)}
+                onClose={this.handleClose1}
+                >
+                    {this.state.tracks && this.state.tracks.map((option, index) => (
+                    <MenuItem
+                    key={option}
+                    selected={index === this.state.selectedIndex1}
+                    onClick={event => this.handleMenuItemClick1(event, index)}
+                    >
+                        {option}
+                    </MenuItem>
+                    ))}
+                </Menu>}
+                {this.state.pbs && <Menu
+                id="simple-menu"
+                anchorEl={anchorEl2}
+                open={Boolean(anchorEl2)}
+                onClose={this.handleClose2}
+                >
+                    {this.state.pbs[this.state.selectedIndex1] && this.state.pbs[this.state.selectedIndex1].map((option, index) => (
+                    <MenuItem
+                    key={option}
+                    selected={index === this.state.selectedIndex2}
+                    onClick={event => this.handleMenuItemClick2(event, index)}
+                    >
+                        {option}
+                    </MenuItem>
+                    ))}
+                </Menu>}
                 <Typography component="p" onClick={this.deleteGoBack} className="go_back white pointer little_up little_big little_down"><KeyboardArrowLeft className="center-vert"/><span className="center-vert">Go Back</span></Typography>
                 <div className="team_details">
                     <Typography component="p" className="team_name big green bold">{this.state.team_name}</Typography>
@@ -242,9 +352,17 @@ class TeamEval extends Component{
                     }
                     <Typography component="p" className="big green little_up bold">Track</Typography>
                     {this.state.team_track && <Typography component="p" className="big white">{this.state.team_track}</Typography>}
+                    {!this.state.team_track && <Button className="tracks_dropdown_btn" aria-owns={anchorEl1 ? 'simple-menu' : undefined}
+          aria-haspopup="true"
+          onClick={this.handleClick1}>Select Track</Button>}
+                    {this.state.set_track && <Typography className="big white">{this.state.set_track}</Typography>}
                     <Typography component="p" className="big green little_up bold">Problem Statement</Typography>
                     {this.state.team_problem_statement && <Typography component="p" className="little_big white">{this.state.team_problem_statement}</Typography>}
-                    {this.state.team_problem_statement=="Other" && <textarea rows="5" cols="150" onChange={this.handleChange('team_own_ps')} className="message_ps_box" value={this.state.team_own_ps}></textarea>}
+                    {!this.state.team_problem_statement && <Button className="pbs_dropdown_btn" aria-owns={anchorEl2 ? 'simple-menu' : undefined}
+          aria-haspopup="true"
+          onClick={this.handleClick2}>Select Problem Statement</Button>}<br></br>
+                    {this.state.set_pbs && <Typography className="big white">{this.state.set_pbs}</Typography>}<br></br>
+                    {this.state.set_pbs=="Other" && <textarea rows="5" cols="150" onChange={this.handleChange('team_own_ps')} className="message_ps_box" value={this.state.team_own_ps}></textarea>}
                     {!this.state.team_problem_statement && <Button onClick={this.dopsselection} className="ps_submit_btn">Submit</Button>}
                 </div>
 
