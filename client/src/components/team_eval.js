@@ -109,7 +109,7 @@ class TeamEval extends Component{
         let params=new URLSearchParams()
         params.append('teamCode',localStorage.getItem('c2c_judge_teamno'))
         axios.get('https://salty-citadel-13883.herokuapp.com/tracks').then((res)=>{
-            console.log(res.data)
+            
             let data=res.data.data
             let pbs=[]
             let tracks=[]
@@ -142,7 +142,6 @@ class TeamEval extends Component{
             },
             params
         }).then((res)=>{
-            console.log(res.data)
             this.setState({
                 team_name:res.data.teamId,
                 team_members:res.data.names,
@@ -224,14 +223,12 @@ class TeamEval extends Component{
             params.append('ps',this.state.team_own_ps)
         }
 
-        console.log(this.state)
 
         axios.post(BASE_URL+'/postps',params,{
             headers:{
                 'Authorization':localStorage.getItem('c2c_judge_auth')
             }
         }).then((res)=>{
-            console.log(res.data)
             window.location.reload()
         })
     }
@@ -244,14 +241,11 @@ class TeamEval extends Component{
         params.append('as',this.state.insp1_3)
         params.append('remarks',this.state.insp1_remarks)
 
-        console.log(this.state)
-
         axios.post(BASE_URL+'/postinsp1',params,{
             headers:{
                 'Authorization':localStorage.getItem('c2c_judge_auth')
             }
         }).then((res)=>{
-            console.log(res.data)
             window.location.reload()
         })
     }
@@ -263,14 +257,11 @@ class TeamEval extends Component{
         params.append('pc',this.state.insp2_2)
         params.append('remarks',this.state.insp2_remarks)
 
-        console.log(params)
-
         axios.post(BASE_URL+'/postinsp2',params,{
             headers:{
                 'Authorization':localStorage.getItem('c2c_judge_auth')
             }
         }).then((res)=>{
-            console.log(res.data)
             window.location.reload()
         })
     }
@@ -285,14 +276,11 @@ class TeamEval extends Component{
         params.append('crp',this.state.insp3_5)
         params.append('remarks',this.state.insp3_remarks)
 
-        console.log(this.state)
-
         axios.post(BASE_URL+'/posteval',params,{
             headers:{
                 'Authorization':localStorage.getItem('c2c_judge_auth')
             }
         }).then((res)=>{
-            console.log(res.data)
             window.location.reload()
         })
     }

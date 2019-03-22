@@ -29,12 +29,10 @@ class Login extends Component{
             password:this.state.password
         }
 
-        console.log(obj)
         let params=new URLSearchParams()
         params.append('username',this.state.username)
         params.append('password',this.state.password)
         axios.post(BASE_URL+'/login',params).then((res)=>{
-            console.log(res.data)
             localStorage.setItem('c2c_judge_auth',res.data.token)
             localStorage.setItem('c2c_judge_name',res.data.name)
 
