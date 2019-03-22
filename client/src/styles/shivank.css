@@ -1,0 +1,332 @@
+.green1 {
+    height: 50% !important;
+    position: absolute !important;
+    top: -5% !important;
+    right: -5% !important;
+}
+
+.green2 {
+    height: 50% !important;
+    position: absolute !important;
+    bottom: -5% !important;
+    left: -5% !important;
+}
+
+.c2c_logo{
+    text-align: center!important;
+}
+
+.c2clogo_logo {
+    height:150px!important;
+    width:150px!important;   
+}
+
+.c2clogo_text {
+    margin-left:20px!important;
+    font-size: 45px !important;
+    font-weight: bold !important;
+    color: white !important;
+}
+
+.same_line{
+    display:inline-block!important;
+}
+
+.center-vert{
+    vertical-align:middle!important;
+}
+
+.center{
+    text-align:center!important;
+}
+
+.welcome_div{
+    margin-top:300px!important;
+}
+
+.login_btn{
+    margin-top:50px!important;
+    height:70px!important;
+    width:300px!important;
+    border-radius:50px!important;
+    color:#48BA86!important;
+    background-color: white!important;
+    font-size:30px!important;
+    font-weight:bold!important;
+    letter-spacing: 2px!important;
+}
+
+.login_btn:hover{
+    color:white!important;
+    background-color: #48BA86!important;
+}
+
+.team_number_submit{
+    margin-top:50px!important;
+    height:50px!important;
+    width:250px!important;
+    border-radius:50px!important;
+    color:#48BA86!important;
+    background-color: white!important;
+    font-size:22px!important;
+    font-weight:bold!important;
+    letter-spacing: 2px!important;
+}
+
+.team_number_submit:hover{
+    color:white!important;
+    background-color: #48BA86!important;
+}
+
+.username_input,.password_input{
+    height:50px!important;
+    width:500px!important;
+    border:3px solid white!important;
+    margin-top:20px!important;
+    background-color:#1E1E1E!important;
+    border-radius:10px!important;
+    padding:5px 15px!important;
+    font-size:20px!important;
+    color:white!important;
+}
+
+.login_div{
+    margin-top:200px!important;
+}
+
+.num_inp{
+    height: 50px!important;
+    width: 200px!important;
+    border:3px solid white!important;
+    background-color:#1E1E1E!important;
+    border-radius:10px!important;
+    padding:5px 15px!important;
+    font-size:40px!important;
+    color:white!important;
+    text-align:center!important;
+    margin:0 10px!important;
+}
+
+.enter_tnum{
+    font-size:24px!important;
+    color:white!important;
+    margin-top:40px!important;
+    margin-bottom:60px!important;
+    font-weight:bold!important;
+}
+
+.welcome_name{
+    margin-top:50px!important;
+    margin-bottom:10px!important;
+    font-size:24px!important;
+    color:#48BA86!important;
+}
+
+.bold{
+    font-weight:bold!important;
+}
+
+.logout_link{
+    color:white!important;
+    font-size:20px!important;
+    cursor:pointer!important;
+}
+
+.team_number_div{
+    margin-top:200px!important;
+}
+
+.team_details{
+    background-color:#4E4E4E!important;
+    padding:20px!important;
+    border-radius:10px!important;
+    width: 60%!important;
+    margin:0 auto!important;
+}
+
+.big{
+    font-size:28px!important;
+}
+
+.little_big{
+    font-size:20px!important;
+}
+
+.green{
+    color:#48BA86!important;
+}
+
+.team_member_name{
+    margin-right:50px!important;
+}
+
+.white{
+    color:white!important;
+}
+
+.little_up{
+    margin-top:20px!important;
+}
+
+.little_down{
+    margin-bottom:20px!important;
+}
+
+.little_left{
+    margin-left:20px!important;
+}
+
+.little_right{
+    margin-right:20px!important;
+}
+
+.pointer{
+    cursor:pointer!important;
+}
+
+.go_back{
+    margin-left:20%!important;
+}
+
+.right{
+    float:right!important;
+}
+
+.right_by_margin{
+    float:right!important;
+}
+
+.tech_inspect_1,.tech_inspect_2,.tech_inspect_3{
+    background-color:#4E4E4E!important;
+    padding:20px!important;
+    border-radius:10px!important;
+    width: 60%!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    margin-top:50px!important;
+}
+
+.scores1,.scores2,.scores3{
+    background-color:#4E4E4E!important;
+    padding:20px!important;
+    border-radius:10px!important;
+    width: 60%!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    margin-top:50px!important;
+}
+
+.team_eval_div{
+    margin-top:50px!important;
+}
+
+.score_inp{
+    height: 40px!important;
+    width: 50px!important;
+    border:3px solid white!important;
+    background-color:#4E4E4E!important;
+    border-radius:10px!important;
+    padding:5px 15px!important;
+    font-size:40px!important;
+    color:white!important;
+    text-align:center!important;
+    margin:0 10px!important;
+}
+
+.scores1,.scores2,.scores3{
+    background-color:#4E4E4E!important;
+    padding:20px!important;
+}
+
+.margintop_50{
+    margin-top:50px!important;
+}
+
+.margindown_50{
+    margin-bottom:50px!important;
+}
+
+.margintop_30{
+    margin-top:30px!important;
+}
+
+.margindown_30{
+    margin-bottom:30px!important;
+}
+
+.back_green{
+    background-color:#48BA86!important;
+}
+
+.message_box{
+    width:90%!important;
+    border:3px solid white!important;
+    background-color:#4E4E4E!important;
+    border-radius:10px!important;
+    color:white!important;
+    padding:5px 15px!important;
+    font-size:20px!important;
+}
+
+.message_ps_box{
+    width:90%!important;
+    border:3px solid white!important;
+    background-color:#4E4E4E!important;
+    border-radius:10px!important;
+    color:white!important;
+    padding:5px 15px!important;
+    font-size:20px!important;
+    margin-top:20px!important;
+}
+
+.ps_submit_btn{
+    margin-top:30px!important;
+    font-size:16px!important;
+    background-color:#48BA86!important;
+    color:white!important;
+    padding:5px 15px!important;
+    border-radius:10px!important;
+}
+
+@media only screen and (max-width:600px){
+    .welcome_div{
+        margin-top:50px!important;
+    }
+
+    .login_div{
+        margin-top:50px!important;
+    }
+
+    .username_input,.password_input{
+        height:50px!important;
+        width:80%!important;
+    }
+
+    .team_number_div{
+        margin-top:50px!important;
+    }
+
+    .team_details{
+        width: 80%!important;
+    }
+
+    .tech_inspect_1,.tech_inspect_2,.tech_inspect_3{
+        width: 80%!important;
+    }
+    
+    .scores1,.scores2,.scores3{
+        width: 80%!important;
+    }
+
+    .big{
+        font-size:22px!important;
+    }
+
+    .little_big{
+        font-size:18px!important
+    }
+
+    .go_back{
+        margin-left:5%!important;
+    }
+}
